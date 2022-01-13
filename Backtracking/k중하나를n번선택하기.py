@@ -14,6 +14,8 @@ def Choose(curr_num : int, string:list):
     
     for i in range(1,k+1):
         Choose(curr_num+1, string+[i])
+        # string형이라면, str()함수에 i를 넣어서 정수i를 문자열로 변환한다
+        # string+str(i)
     
 
 
