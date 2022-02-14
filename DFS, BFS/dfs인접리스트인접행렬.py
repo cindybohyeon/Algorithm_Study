@@ -43,7 +43,7 @@ def dfs(v,visited,graph):
             count += 1
             
 
-dfs(1,visited,graph)
+dfs(1,visited,graph)                      
 print(count)
 ''''
 인접행렬
