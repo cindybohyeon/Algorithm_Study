@@ -20,3 +20,24 @@ def Choose(curr_num : int, string:list):
 
 
 Choose(1,[])
+# 0218
+
+k, n = tuple(map(int, input().split()))
+answer = []
+
+def print_answer():
+    for elem in answer:
+        print(elem, end = " ")
+    print()
+
+def Choose_(num):
+    if(num == n+1):
+        print_answer()
+        return
+    for i in range(1,k+1):
+        answer.append(i)
+        Choose_(num+1)
+        # pop을 하는 이유 
+        answer.pop()
+
+Choose_(1)
