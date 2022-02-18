@@ -25,3 +25,30 @@ def Choose(x : int, string:list):
         '''
 
 Choose(1,[])
+
+
+# 0218
+
+
+k, m = map(int, input().split())
+answer = []
+
+def Choose(curr_num):
+    global k,m
+    if curr_num == m+1:
+        for a in answer:
+            print(a, end = ' ')
+        print()
+        return
+    for i in range(1,k+1):
+        if curr_num <= 2 or i != answer[-1] or i != answer[-2]:
+            answer.append(i)
+            Choose(curr_num + 1)
+            answer.pop()
+
+            # Choose(curr_num)
+
+
+
+
+Choose(1)
