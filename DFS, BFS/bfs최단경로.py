@@ -115,42 +115,81 @@
 #                 queue.append((nx,ny))
 
 
-from collections import deque
-import sys
-INT_MAX = sys.maxsize
-n, m = tuple(map(int, input().split()))
-graph = [list(map(int, input().split())) for _ in range(n)]
+# from collections import deque
+# import sys
+# INT_MAX = sys.maxsize
+# n, m = tuple(map(int, input().split()))
+# graph = [stdin.readline().rstrip() for _ in range(n)]
 
-visited = [[0 for _ in range(m) ] for _ in range(n)]
+# visited = [[0 for _ in range(m) ] for _ in range(n)]
+
+# def in_range(x,y):
+#     return x >= 0 and y >= 0 and x < n and y < m
+
+# def can_go(x,y):
+#     return in_range(x,y) and graph[x][y] and not visited[x][y] 
+
+# count = 0
+
+# def bfs(x,y,graph):
+    
+#     global count
+#     queue = deque()
+#     queue.append((x,y))
+
+#     dx = [-1,1,0,0]
+#     dy = [0,0,-1,1]
+
+#     while queue:
+#         queue.popleft()
+
+#         if x == n-1 and y == m-1:
+#             print(count)
+#             break
+
+#         for i,j in zip(dx,dy):
+#             nx = x + i
+#             ny = y + j
+#             if(can_go(nx,ny)):
+#                 queue.append((nx,ny))
+#                 visited[nx][ny] = 1
+#                 count += 1
+
+# 0220 최종 
+# step 배열을 이용했다.
+
+from collections import deque
+
+n,m = tuple(map(int, input().split()))
+graph = [list(map(int, input().split())) for _ in range(n)]
+visited = [[0 for _ in range(m)] for _ in range(n)]
+step = [[0 for _ in range(m)] for _ in range(n)]
+
 
 def in_range(x,y):
     return x >= 0 and y >= 0 and x < n and y < m
 
-def can_go(x,y):
-    return in_range(x,y) and graph[x][y] and not visited[x][y] 
-
-count = 0
+def can_go(nx, ny):
+    return in_range(nx,ny) and graph[nx][ny] and not visited[nx][ny]
 
 def bfs(x,y,graph):
-    
-    global count
     queue = deque()
     queue.append((x,y))
-
+    visited[x][y] = 1
+    
     dx = [-1,1,0,0]
     dy = [0,0,-1,1]
 
     while queue:
-        queue.popleft()
-
-        if x == n-1 and y == m-1:
-            print(count)
-            break
-
+        x,y = queue.popleft()
         for i,j in zip(dx,dy):
             nx = x + i
             ny = y + j
             if(can_go(nx,ny)):
                 queue.append((nx,ny))
+                step[nx][ny] = step[x][y] + 1
                 visited[nx][ny] = 1
-                count += 1
+
+bfs(0,0,graph)
+answer = 1 if visited[n-1][m-1] else 0
+print(step[n-1][m-1]) if step[n-1][m-1] != 0 else print(-1)
