@@ -157,6 +157,8 @@
 
 # 0220 최종 
 # step 배열을 이용했다.
+# step 을 visited 대신이용할 수 도 있다. 
+# 즉 , can_go 함수에서도 step 을 이용하기.
 
 from collections import deque
 
