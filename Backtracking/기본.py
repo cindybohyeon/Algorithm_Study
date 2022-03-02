@@ -32,3 +32,36 @@ def Choose(curr_num : int, string: str):
     # string = string[:-1]
     
 Choose(1,'')
+
+
+
+# 0302
+import sys
+si = sys.stdin.readline
+
+k,n = map(int, si().split())
+
+# 둘 중 하나를 N 번 선택하기 
+# k개 중 하나를 N번 선택하기
+ans = []
+
+def Choose(curr_num):
+    global n
+    if curr_num == n:
+        for a in ans:
+            print(a, end = ' ')
+        print()
+        return
+
+    
+    ans.append(0)
+    Choose(curr_num+1)
+    ans.pop()
+
+    ans.append(1)
+    Choose(curr_num+1)
+    ans.pop()
+
+    return
+
+Choose(0)
