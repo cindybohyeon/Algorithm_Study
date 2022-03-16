@@ -1,15 +1,18 @@
 def main():
-    x = input()
-    
-    print(x)
+    x = list(input())
+    len_x = len(x)
+    a = 0
+    b = 0
+    for i in range(len_x):
+        if x[i] == '(':
+            a += 1
+        else:
+            b += 1
+    if a == b:
+        print("YES")
+    else:
+        print("NO")
+
 
 if __name__=="__main__":
     main()
-
-
-    # 악당은 하나라도 ㅋ터지면 우
-
-    # ()개수가 일치하면 성공이고 
-    # ()개수가 불일치 하면 실패이다
-    # 그것에 대한 성공실패를 출력하라
-    
