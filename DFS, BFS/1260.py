@@ -56,7 +56,7 @@ for _ in range(m):
 
 def bfs(graph, visited, v):
     queue = deque()
-    queue.append(v)s
+    queue.append(v)
     visited[v] = True
     while queue:
         x = queue.popleft()
