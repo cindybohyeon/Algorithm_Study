@@ -4,9 +4,9 @@ room = []
 for _ in range(n):
     a,b = map(int, input().split())
     room.append([a,b])
-
-# room.sort(key= lambda x:x[0])
 room.sort(key= lambda x:x[1])
+room.sort(key= lambda x:x[0])
+
 
 print(room)
 
