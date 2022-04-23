@@ -1,0 +1,1 @@
+delete from student where ID <= 60000 and tot_cred = 0
