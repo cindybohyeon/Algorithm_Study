@@ -31,7 +31,7 @@ for i in range(n):
         if dfs(i,j):
             ans += 1
 print(ans)
-
+ 
     
 
 
