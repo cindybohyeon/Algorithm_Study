@@ -54,6 +54,7 @@ def solution(rectangle, characterX, characterY, itemX, itemY):
         if x == itemX * 2 and y == itemY * 2:
             answer = visited[x][y] // 2
             break
+            # break는 가까운 반복문을 하나만 ㅃㅏ져나온다.
         # 아니라면 상하좌우를 탐색
         for k in range(4):
             nx = x + dx[k]
