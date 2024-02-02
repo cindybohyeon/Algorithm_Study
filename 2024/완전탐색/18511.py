@@ -20,6 +20,8 @@ while 1:
     # 최대길이로 먼저 중복순열을 돌린다
     num = list(product(graph, repeat = maxLen))
     for a in num:
+        print(a, "a")
+        print(list(map(str, a)), "list")
         tempA = int(''.join(list(map(str, a))))
         if (tempA <= n):
             result = max(result, tempA)
