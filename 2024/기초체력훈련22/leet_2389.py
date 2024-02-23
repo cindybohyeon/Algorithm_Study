@@ -1,21 +1,72 @@
 class Solution:
     def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
-        # 합을 내는 가장 긴 수열의 길이..
+        # (!) 그리디 풀이
         nums.sort() # 1 2 4 5
         result = []
         n = len(nums)
+        # totalSum = sum(nums)
+
+        # for q in queries:
+        #     tempResult = 0
+        #     tempSum = totalSum
+        #     for i in range(n-1, -1, -1):
+        #         if tempSum == q:
+        #             tempResult = max(i + 1, tempResult)
+        #         elif tempSum > q:
+        #             tempSum -= nums[i]
+        #         else:
+        #             tempResult = max(i + 1, tempResult)
+
+        #     result.append(tempResult)
+
+        # return result
+
+
+        # (2) dp + 이분탐색 upper bound
         dp = [0 for _ in range(n)]
         dp[0] = nums[0]
         for i in range(1, n):
             dp[i] = dp[i - 1] + nums[i]
-        print(dp)
+        # print(dp,"dp")
         for q in queries:
+            start = 0
+            end = n - 1
+            temp = n
+            while(start <= end):
+                mid = (start + end) // 2
+                if dp[mid] <= q:
+                    start = mid + 1
+                else:
+                    end = mid - 1    
+            temp = start
 
-            dp_ = [0 for _ in range(n)]
-            for i in range(n):
-                dp_[i] = abs(q - dp[i])
-            print(dp_,'#')
-            result.append(dp_.index(min(dp_)) + 1)
+
+                    # if mid - 1 >= 0 and dp[mid - 1] <= q:
+                    #     temp = mid
+                    # else:
+                    #     temp = 0
+                    # break
+            result.append(temp)
+
+        return result
+
+
+        # 합을 내는 가장 긴 수열의 길이..
+        # nums.sort() # 1 2 4 5
+        # result = []
+        # n = len(nums)
+        # dp = [0 for _ in range(n)]
+        # dp[0] = nums[0]
+        # for i in range(1, n):
+        #     dp[i] = dp[i - 1] + nums[i]
+        # print(dp)
+        # for q in queries:
+
+        #     dp_ = [0 for _ in range(n)]
+        #     for i in range(n):
+        #         dp_[i] = abs(q - dp[i])
+        #     print(dp_,'#')
+        #     result.append(dp_.index(min(dp_)) + 1)
             # temp = 0
             # start = 0
             # end = n - 1
