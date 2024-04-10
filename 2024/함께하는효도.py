@@ -1,73 +1,134 @@
+import copy
 import sys
-from collections import deque
+from itertools import combinations, permutations
 # input = sys.stdin.readline()
 n, m = map(int, input().split())
 graph = []
 for _ in range(n):
     graph.append(list(map(int, input().split())))
 visited = [[0 for _ in range(n)] for _ in range(n)]
+friends = []
+sumR = 0
+for _ in range(m):
+    x1, y1 = map(int, input().split())
+    x1, y1 = x1-1, y1-1
+    friends.append([x1, y1])
+for a,b in friends:
+    visited[a][b] = 1
 
-x1, y1 = map(int, input().split())
-x1, y1 = x1-1, y1-1
-x2, y2 = map(int, input().split())
-x2, y2 = x2-1, y2-1
-# 3초에 최대를 넣는다.
-visited[x1][y1] = 1
-visited[x2][y2] = 1
+# 3초 안에 수확량의 총 합을 구해야한다.
+# (1) 각 친구의 위치에서 구할 수 있는 모든 경우의 수를 구한다.
+# (2) 각 친구의 최대 값을 구했다고 가정했을 때 겹치는 것이 있는지 확인해야한다. How? 좌표값을 가지고 있다고 가정하자.
+
 def in_range(x, y):
     if x >= 0 and y >= 0 and x < n and y < n:
         return True
     return False
 
-# 각자 한번씩 넣어야 한다..
-# 
-
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-q = deque()
-q.append((x1, y1))
-q.append((x2, y2))
-count = 0
-result = graph[x1][y1] + graph[x2][y2]
-while len(q) != 0:
-    x, y = q.pop()
-    max_move = 0
-    moveX, moveY = 0, 0
+# print(visited, "vis")
+
+def allCount(x, y, count, visited, resultList, result):
+    global graph
+    global friendResult, friendResultGraph
+    if count == 3:
+        friendResult.append(result)
+        friendResultGraph.append(resultList)
+        
+        
+        # print(result, resultList)
+        return result
+
     for a, b in zip(dx, dy):
-        nx = a + x
-        ny = b + y
+        R = copy.deepcopy(result)
+        V = copy.deepcopy(visited)
+        C = copy.deepcopy(count)
+        RL = copy.deepcopy(resultList)
+        nx = x + a
+        ny = y + b
         if in_range(nx, ny) and visited[nx][ny] == 0:
-            if max_move < graph[nx][ny]:
-                max_move = graph[nx][ny]
-                moveX, moveY = nx, ny
-    # if count < 3:
-    q.append((moveX, moveY))
-    count += 1
-    visited[moveX][moveY] = 1
-    # print(max_move)
-    result += max_move
+            # 지나갈 수 있는 것.
+            R += graph[nx][ny]
+            V[nx][ny] = 1
+            RL.append([nx, ny])
+
+            allCount(nx, ny, C + 1, V, RL, R)
+
+T_friendResult = []
+T_friendResultGraph = []
+
+for a,b in friends:
+    friendResult = []
+    friendResultGraph = []
+    allCount(a, b, 0, visited, [], graph[a][b])
+    # print(friendResultGraph, "##", len(friendResultGraph))
+    T_friendResult.append(max(friendResult))
+    tempIndex = friendResult.index(max(friendResult))
+    T_friendResultGraph.append(friendResultGraph)
 
 
-# q = deque()
-# q.append((x2, y2))
-# count = 0
-# result += graph[x2][y2]
-# while len(q) != 0:
-#     x, y = q.pop()
-#     max_move = 0
-#     moveX, moveY = 0, 0
-#     for a, b in zip(dx, dy):
-#         nx = a + x
-#         ny = b + y
-#         if in_range(nx, ny) and visited[nx][ny] == 0:
-#             if max_move < graph[nx][ny]:
-#                 max_move = graph[nx][ny]
-#                 moveX, moveY = nx, ny
-#     if count < 3:
-#         q.append((moveX, moveY))
-#         count += 1
-#         visited[moveX][moveY] = 1
-#         # print(max_move)
-#         result += max_move
-print(result)
+# 친구가 1명인 경우
+if m == 1:
+    print(T_friendResult[0])
+
+# 친구가 2명인 경우
+if m == 2:
+    twoR = []
+    fristSum = 0
+    for a,b in friends:
+        fristSum += graph[a][b]
+        
+    for F1 in T_friendResultGraph[0]:
+        for F2 in T_friendResultGraph[1]:
+            # 모든 경우의 수.
+            tempList = F1 + F2
+            tempList.sort()
+            # 겹치는 것을 뺀다.
+            realList = []
+            # print(tempList, "TEmp")
+            for i in range(len(tempList)):
+                if i < len(tempList) - 1 and tempList[i] == tempList[i + 1]:
+                    continue
+                realList.append(tempList[i])
+            # print(realList, "Real")
+            realResult = 0
+            for i, j in realList:
+                realResult += graph[i][j]
+                
+            # print(realResult, "RR")
+            twoR.append(realResult)
+    print(max(twoR) + fristSum)
+# for i in range(len(friends)):
+#     combi = list(combinations(T_friendResultGraph[i], 1))
+#     print(combi, "EE")
+
+    
+if m == 3:
+    thirdR = []
+    fristSum = 0
+    for a,b in friends:
+        fristSum += graph[a][b]
+        
+    for F1 in T_friendResultGraph[0]:
+        for F2 in T_friendResultGraph[1]:
+            for F3 in T_friendResultGraph[2]:
+                # 모든 경우의 수.
+                tempList = F1 + F2 + F3
+                tempList.sort()
+            # 겹치는 것을 뺀다.
+                realList = []
+            # print(tempList, "TEmp")
+                for i in range(len(tempList)):
+                    if i < len(tempList) - 1 and tempList[i] == tempList[i + 1]:
+                        continue
+                    realList.append(tempList[i])
+            # print(realList, "Real")
+                realResult = 0
+                for i, j in realList:
+                    realResult += graph[i][j]
+                
+            # print(realResult, "RR")
+                thirdR.append(realResult)
+    print(max(thirdR) + fristSum)
